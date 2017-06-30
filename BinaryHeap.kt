@@ -29,6 +29,10 @@ package BinaryHeap
 import kotlin.collections.ArrayList
 
 
+/**
+ * MutableIterator for the BinaryHeap class. Returned by BinaryHeap.iterator() function
+ * Warning: iteration removes elements from the binary heap!
+ */
 private class BHMutableIterator<out T>(private val _bh: BinaryHeap<T>) : MutableIterator<T> {
     override fun remove() { _bh.pop() }
 
@@ -38,6 +42,9 @@ private class BHMutableIterator<out T>(private val _bh: BinaryHeap<T>) : Mutable
 }
 
 
+/**
+ * a generic BinaryHeap that compares elements according to predicate comp
+ */
 class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
 
     private var _data: ArrayList<T> = ArrayList()
@@ -123,10 +130,6 @@ class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
         _data[n1] = _data[n2]
         _data[n2] = temp
     }
-
-    /**
-     * MutableIterator to allow for
-     */
 }
 
 
