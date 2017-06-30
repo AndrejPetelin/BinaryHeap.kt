@@ -26,8 +26,6 @@
 
 package BinaryHeap
 
-import kotlin.collections.ArrayList
-
 
 /**
  * MutableIterator for the BinaryHeap class. Returned by BinaryHeap.iterator() function
