@@ -47,14 +47,17 @@ private class BHMutableIterator<out T>(private val _bh: BinaryHeap<T>) : Mutable
  */
 class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
 
-    private var _data: ArrayList<T> = ArrayList()
-    private val _iter = BHMutableIterator<T>(this)
+    private var _data: ArrayList<T> = ArrayList()   // data member
+    private val _iter = BHMutableIterator<T>(this)  // a MutableIterator
 
 
     val size: Int
         get() = _data.size
 
     fun isEmpty(): Boolean = _data.isEmpty()
+
+    override fun iterator(): MutableIterator<T> = _iter
+
 
     /**
      * adds element to BinaryHeap and reorder _data to maintain heap consistency
@@ -108,7 +111,6 @@ class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
         return _data[0]
     }
 
-    override fun iterator(): MutableIterator<T> = _iter
 
     /**
      * helper functions for internal book-keeping
@@ -125,15 +127,13 @@ class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
         else return childL
     }
 
+
     private fun swapAt(n1: Int, n2: Int) {
         val temp = _data[n1]
         _data[n1] = _data[n2]
         _data[n2] = temp
     }
 }
-
-
-
 
 
 /**
@@ -143,12 +143,14 @@ fun <T: Comparable<T>> binaryHeap(): BinaryHeap<T> {
     return BinaryHeap<T>({x: T, y: T -> x < y})
 }
 
+
 /**
  * create BinaryHeap of any kind of types, ordering will be done according to provided predicate function
  */
 fun <T> binaryHeap(comp: (T, T) -> Boolean): BinaryHeap<T> {
     return BinaryHeap<T>(comp)
 }
+
 
 /**
  * create a BinaryHeap from data which has a natural order
