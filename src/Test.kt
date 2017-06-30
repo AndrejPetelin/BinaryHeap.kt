@@ -4,7 +4,7 @@
  * Created by irenenaya on 6/30/17.
  */
 
-import BinaryHeap
+import BinaryHeap.*
 
 fun main (vararg argv : String) {
     // Creating priority queue

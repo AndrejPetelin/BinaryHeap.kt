@@ -6,7 +6,7 @@
  */
 
 
-import BinaryHeap
+import BinaryHeap.*
 
 data class PersonComp (var name : String, var age : Int) : Comparable<PersonComp> {
     override operator fun compareTo(other: PersonComp): Int = this.age.compareTo(other.age)
