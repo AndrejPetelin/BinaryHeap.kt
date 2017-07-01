@@ -45,6 +45,13 @@ private class BHMutableIterator<out T>(private val _bh: BinaryHeap<T>) : Mutable
  */
 class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
 
+    constructor(other: BinaryHeap<T>, comp: (T, T) -> Boolean) : this(comp) {
+        for (i in other) {
+            push(i)
+        }
+    }
+
+
     private var _data: ArrayList<T> = ArrayList()   // data member
     private val _iter = BHMutableIterator<T>(this)  // a MutableIterator
 
@@ -111,6 +118,63 @@ class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
 
 
     /**
+     * changes the predicate function so that ordering is now done using the new one. The function reorders the current
+     * elements in the BinaryHeap according to the new function.
+     */
+    fun predicate(pred: (T, T) -> Boolean) {
+        // TODO
+        // perhaps add as external helper functions to just copy a BinaryHeap?
+    }
+
+
+    /**
+     * pops elements off the heap while test is true where test is a lambda/function reference or until heap exhausted
+     */
+    fun popWhile(test: (T) -> Boolean): ArrayList<T> {
+        val ret = ArrayList<T>()
+        while (!isEmpty() && test(peek())) {
+            ret.add(pop())
+        }
+        return ret
+    }
+
+    /**
+     * as above, except it will stop when test condition is met (or heap exhausted)
+     */
+    fun popUntil(test: (T) -> Boolean): ArrayList<T> {
+        val ret = ArrayList<T>()
+        while (!isEmpty() && !test(peek())) {
+            ret.add(pop())
+        }
+        return ret
+    }
+
+
+    /**
+     *  replaces the predicate function comp with pred and reorders BinaryHeap using the new comp
+     */
+    fun changePredicate(pred: (T, T) -> Boolean) {
+        val temp = _data
+        _data = ArrayList<T>(initialCapacity = _data.size)
+        comp = pred
+        for (i in temp) {
+            push(i)
+        }
+    }
+
+
+    /**
+     * Clones the binary heap
+     * TODO: not sure about this one, although I'm sure it works unsafe cast makes me nervous :) Also, do we need it?
+     */
+    fun clone(): BinaryHeap<T> {
+        val ret = BinaryHeap<T>(comp)
+        ret._data = _data.clone() as ArrayList<T>
+        return ret
+    }
+
+
+    /**
      * helper functions for internal book-keeping
      */
 
@@ -167,4 +231,19 @@ fun <T> toBinaryHeap(comp: (T, T) -> Boolean, vararg args: T): BinaryHeap<T> {
     val ret = BinaryHeap<T>(comp)
     for (x in args) ret.push(x)
     return ret
+}
+
+
+/**
+ * create a new BinaryHeap from old one that gets emptied, using natural order of sorting for comparable
+ */
+fun <T: Comparable<T>> fromBinaryHeap(other: BinaryHeap<T>): BinaryHeap<T> {
+    return BinaryHeap<T>(other, {x: T, y: T -> x < y})
+}
+
+/**
+ * create a new BinaryHeap from old one that gets emptied, using the comp comparison function (T, T) -> Boolean
+ */
+fun <T> fromBinaryHeap(other: BinaryHeap<T>, comp: (T, T) -> Boolean): BinaryHeap<T> {
+    return BinaryHeap(other, comp)
 }
