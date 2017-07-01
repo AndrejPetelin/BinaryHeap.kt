@@ -45,13 +45,6 @@ private class BHMutableIterator<out T>(private val _bh: BinaryHeap<T>) : Mutable
  */
 class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
 
-    constructor(other: BinaryHeap<T>, comp: (T, T) -> Boolean) : this(comp) {
-        for (i in other) {
-            push(i)
-        }
-    }
-
-
     private var _data: ArrayList<T> = ArrayList()   // data member
     private val _iter = BHMutableIterator<T>(this)  // a MutableIterator
 
@@ -152,6 +145,8 @@ class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
 
     /**
      *  replaces the predicate function comp with pred and reorders BinaryHeap using the new comp
+     *  At large sizes potentially problematic, the space is doubled
+     *  TODO: do we need this? Is it better than non-trivial constructor that simply pops from old, pushes to new?
      */
     fun changePredicate(pred: (T, T) -> Boolean) {
         val temp = _data
@@ -238,12 +233,20 @@ fun <T> toBinaryHeap(comp: (T, T) -> Boolean, vararg args: T): BinaryHeap<T> {
  * create a new BinaryHeap from old one that gets emptied, using natural order of sorting for comparable
  */
 fun <T: Comparable<T>> fromBinaryHeap(other: BinaryHeap<T>): BinaryHeap<T> {
-    return BinaryHeap<T>(other, {x: T, y: T -> x < y})
+    val ret = BinaryHeap<T>({x: T, y: T -> x < y})
+    for (i in other) {
+        ret.push(i)
+    }
+    return ret
 }
 
 /**
  * create a new BinaryHeap from old one that gets emptied, using the comp comparison function (T, T) -> Boolean
  */
 fun <T> fromBinaryHeap(other: BinaryHeap<T>, comp: (T, T) -> Boolean): BinaryHeap<T> {
-    return BinaryHeap(other, comp)
+    val ret = BinaryHeap<T>(comp)
+    for (i in other) {
+        ret.push(i)
+    }
+    return ret
 }
