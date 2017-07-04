@@ -15,7 +15,7 @@ data class PersonComp (var name : String, var age : Int) : Comparable<PersonComp
 
 fun main (vararg argv : String) {
 
-    val pq = toBinaryHeap(PersonComp("John", 30), PersonComp("Mary", 23), PersonComp("Paul", 40))
+    val pq = binaryHeapOf(PersonComp("John", 30), PersonComp("Mary", 23), PersonComp("Paul", 40))
 
     println("Youngest Person is: ${pq.peek().name}, who is ${pq.peek().age} years old")
 

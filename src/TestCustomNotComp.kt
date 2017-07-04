@@ -14,7 +14,7 @@ data class Person(var name : String, var age : Int)
 
 fun main (vararg argv : String) {
 
-    val pq = binaryHeap<Person>( { x, y -> x.age < y.age})
+    val pq = emptyBinaryHeap<Person>( { x, y -> x.age < y.age} )
 
     pq.push(Person("John", 30))
     pq.push(Person("Mary", 23 ))

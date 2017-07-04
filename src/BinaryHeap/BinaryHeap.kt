@@ -150,7 +150,7 @@ class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
      */
     fun changePredicate(pred: (T, T) -> Boolean) {
         val temp = _data
-        _data = ArrayList<T>(initialCapacity = _data.size)
+        _data = ArrayList<T>(temp.size)
         comp = pred
         for (i in temp) {
             push(i)
@@ -196,7 +196,7 @@ class BinaryHeap<T>(private var comp: (T, T) -> Boolean) : MutableIterable<T>  {
 /**
  * create BinaryHeap of Comparable types, heap will be sorted according to natural ordering of elements
  */
-fun <T: Comparable<T>> binaryHeap(): BinaryHeap<T> {
+fun <T: Comparable<T>> emptyBinaryHeap(): BinaryHeap<T> {
     return BinaryHeap<T>({x: T, y: T -> x < y})
 }
 
@@ -204,7 +204,7 @@ fun <T: Comparable<T>> binaryHeap(): BinaryHeap<T> {
 /**
  * create BinaryHeap of any kind of types, ordering will be done according to provided predicate function
  */
-fun <T> binaryHeap(comp: (T, T) -> Boolean): BinaryHeap<T> {
+fun <T> emptyBinaryHeap(comp: (T, T) -> Boolean): BinaryHeap<T> {
     return BinaryHeap<T>(comp)
 }
 
@@ -212,8 +212,8 @@ fun <T> binaryHeap(comp: (T, T) -> Boolean): BinaryHeap<T> {
 /**
  * create a BinaryHeap from data which has a natural order
  */
-fun <T: Comparable<T>> toBinaryHeap(vararg args: T): BinaryHeap<T> {
-    val ret = binaryHeap<T>()
+fun <T: Comparable<T>> binaryHeapOf(vararg args: T): BinaryHeap<T> {
+    val ret = BinaryHeap<T>({x: T, y: T -> x < y})
     for (x in args) ret.push(x)
     return ret
 }
@@ -222,7 +222,7 @@ fun <T: Comparable<T>> toBinaryHeap(vararg args: T): BinaryHeap<T> {
 /**
  * create a BinaryHeap from data that is ordered according to provided comparison function
  */
-fun <T> toBinaryHeap(comp: (T, T) -> Boolean, vararg args: T): BinaryHeap<T> {
+fun <T> binaryHeapOf(vararg args: T, comp: (T, T) -> Boolean): BinaryHeap<T> {
     val ret = BinaryHeap<T>(comp)
     for (x in args) ret.push(x)
     return ret
@@ -239,6 +239,7 @@ fun <T: Comparable<T>> fromBinaryHeap(other: BinaryHeap<T>): BinaryHeap<T> {
     }
     return ret
 }
+
 
 /**
  * create a new BinaryHeap from old one that gets emptied, using the comp comparison function (T, T) -> Boolean

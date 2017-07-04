@@ -8,7 +8,7 @@ import BinaryHeap.*
 
 fun main (vararg argv : String) {
     // Creating priority queue
-    var pq = toBinaryHeap(1.4, 5.5, 2.9, 3.8, 10.0, 15.2, 3.2, 4.8)
+    var pq = binaryHeapOf(1.4, 5.5, 2.9, 3.8, 10.0, 15.2, 3.2, 4.8)
 
     println("Peeking: ${pq.peek()}")
     println("Popping now should give the same value: ${pq.pop()}")
@@ -20,7 +20,7 @@ fun main (vararg argv : String) {
     for (i in 0..50) list.add(Math.random() * 10)
 
     // passing a MutableList as vararg and a predicate to change sorting order
-    pq = toBinaryHeap(comp={x : Double, y : Double ->  x > y}, args= *list.toTypedArray() )
+    pq = binaryHeapOf(*list.toTypedArray()) { y : Double, x : Double ->  x > y}
 
     println("Randomized reverse sorted: ")
     for (i in pq) println(i)
